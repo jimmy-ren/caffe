@@ -47,13 +47,28 @@ namespace caffe {
 	template <typename Dtype>
 	void ROIPoolingLayer<Dtype>::Reshape(const vector<Blob<Dtype>*>& bottom,
 		const vector<Blob<Dtype>*>& top) {
-			channels_ = bottom[0]->channels();
-			height_ = bottom[0]->height();
-			width_ = bottom[0]->width();
-			top[0]->Reshape(bottom[1]->num(), channels_, pooled_height_,
-				pooled_width_);
-			max_idx_.Reshape(bottom[1]->num(), channels_, pooled_height_,
-				pooled_width_);
+			// channels_ = bottom[0]->channels();
+			// height_ = bottom[0]->height();
+			// width_ = bottom[0]->width();
+			// top[0]->Reshape(bottom[1]->num(), channels_, pooled_height_,
+			// 	pooled_width_);
+			// max_idx_.Reshape(bottom[1]->num(), channels_, pooled_height_,
+			// 	pooled_width_);
+			vector<int> bot_dim = bottom[0]->shape();
+			channels_ = bot_dim[1];
+			height_ = bot_dim[3];
+			width_ = bot_dim[4];
+			// std::cout<<"channels_: "<<channels_<<std::endl;
+			// std::cout<<"height_: "<<height_<<std::endl;
+			// std::cout<<"width_: "<<width_<<std::endl;
+			vector<int> top_dim(5);
+			top_dim[0] = bottom[1]->num();
+			top_dim[1] = channels_;
+			top_dim[2] = 1;
+			top_dim[3] = pooled_height_;
+			top_dim[4] = pooled_width_;
+			top[0]->Reshape(top_dim);
+			max_idx_.Reshape(top_dim);
 	}
 
 	template <typename Dtype>
