@@ -180,12 +180,12 @@ classdef Net < handle
             continue;
         end
         input_data_size = size(input_data{n});
-%         input_data_size_extended = [input_data_size, ones(1, 4 - length(input_data_size))];
-        if n==1
-            input_data_size_extended = [input_data_size, ones(1, 1), ones(1, 1)];%3d
-        else
-            input_data_size_extended = [input_data_size, ones(1, 1)];
-        end
+        input_data_size_extended = [input_data_size, ones(1, 5 - length(input_data_size))];
+%         if n==1
+%             input_data_size_extended = [input_data_size, ones(1, 1), ones(1, 1)];%3d
+%         else
+%             input_data_size_extended = [input_data_size, ones(1, 1)];
+%         end
         self.blobs(self.inputs{n}).reshape(input_data_size_extended);
       end
       self.reshape();
