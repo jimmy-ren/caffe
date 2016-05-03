@@ -138,8 +138,8 @@ class Blob {
   /// @brief Deprecated legacy shape accessor width: use shape(3) instead.
   inline int width() const { return LegacyShape(3); }
   inline int LegacyShape(int index) const {
-    CHECK_LE(num_axes(), 4)
-        << "Cannot use legacy accessors on Blobs with > 4 axes.";
+    //CHECK_LE(num_axes(), 4)
+    //    << "Cannot use legacy accessors on Blobs with > 4 axes.";
     CHECK_LT(index, 4);
     CHECK_GE(index, -4);
     if (index >= num_axes() || index < -num_axes()) {
@@ -219,6 +219,7 @@ class Blob {
 
   const Dtype* cpu_data() const;
   void set_cpu_data(Dtype* data);
+  const int* gpu_shape() const;
   const Dtype* gpu_data() const;
   const Dtype* cpu_diff() const;
   const Dtype* gpu_diff() const;
@@ -268,6 +269,7 @@ class Blob {
  protected:
   shared_ptr<SyncedMemory> data_;
   shared_ptr<SyncedMemory> diff_;
+  shared_ptr<SyncedMemory> shape_data_;
   vector<int> shape_;
   int count_;
   int capacity_;
