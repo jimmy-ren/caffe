@@ -37,10 +37,14 @@ void SmoothL1LossLayer<Dtype>::Reshape(
     CHECK_EQ(bottom[0]->height(), bottom[2]->height());
     CHECK_EQ(bottom[0]->width(), bottom[2]->width());
   }
-  diff_.Reshape(bottom[0]->num(), bottom[0]->channels(),
-      bottom[0]->height(), bottom[0]->width());
-  errors_.Reshape(bottom[0]->num(), bottom[0]->channels(),
-      bottom[0]->height(), bottom[0]->width());
+  //diff_.Reshape(bottom[0]->num(), bottom[0]->channels(),
+  //    bottom[0]->height(), bottom[0]->width());
+  //errors_.Reshape(bottom[0]->num(), bottom[0]->channels(),
+  //    bottom[0]->height(), bottom[0]->width());
+
+  vector<int> bottom_dims = bottom[0]->shape();
+  diff_.Reshape(bottom_dims);
+  errors_.Reshape(bottom_dims);
 }
 
 template <typename Dtype>

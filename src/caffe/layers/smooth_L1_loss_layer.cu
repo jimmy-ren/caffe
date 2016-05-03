@@ -57,7 +57,9 @@ namespace caffe {
 
 		Dtype loss;
 		caffe_gpu_asum(count, errors_.gpu_data(), &loss);
-		int spatial_dim = diff_.height() * diff_.width();
+		//int spatial_dim = diff_.height() * diff_.width();
+		int spatial_dim = diff_.shape(diff_.num_axes()-2) * diff_.shape(diff_.num_axes()-1);
+
 		//top[0]->mutable_cpu_data()[0] = loss / bottom[0]->num(); // This is the original implementation in *Fast* R-CNN
 		top[0]->mutable_cpu_data()[0] = loss / bottom[0]->num() / spatial_dim;  // This implementation takes effects for both RPN and Fast R-CNN.
 		// For Fast R-CNN, bottom[0]->num() is 128, and spatial_dim is always 1. This implementation is equivalent.
@@ -91,7 +93,9 @@ namespace caffe {
 		for (int i = 0; i < 2; ++i) {
 			if (propagate_down[i]) {
 				const Dtype sign = (i == 0) ? 1 : -1;
-				int spatial_dim = diff_.height() * diff_.width();
+				//int spatial_dim = diff_.height() * diff_.width();
+				int spatial_dim = diff_.shape(diff_.num_axes()-2) * diff_.shape(diff_.num_axes()-1);
+
 				const Dtype alpha = sign * top[0]->cpu_diff()[0] / bottom[i]->num() / spatial_dim;
 				caffe_gpu_axpby(
 					bottom[i]->count(),              // count
